@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="admin-assets/css/style.css">
+  <!-- Fontawesome CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js" integrity="sha512-M+hXwltZ3+0nFQJiVke7pqXY7VdtWW2jVG31zrml+eteTP7im25FdwtLhIBTWkaHRQyPrhO2uy8glLMHZzhFog==" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" />
+  <!-- Mapbox CDN -->
+  
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-storage.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-database.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+  <!-- manifest.json -->
+  <link rel="manifest" href="lapor-assets/manifest.json">
+
+  <!-- LEAFLET -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""/>
+
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="crossorigin=""></script>
+     
+
+    <!-- Template Main CSS File -->
+    <link href="logis-assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="m6c-assets/style.css" />
+  <title>mySID</title>
+  <style>
+    .mapboxgl-popup-content{
+      min-width: 270px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar : start -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+      mySID - LAPOR (admin)</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="reported.html">Sebelum Banjir</a>
+        </li> -->
+        <li class="nav-item active">
+          <a class="nav-link" href="admin.html"><span class="sr-only">(current)</span>Laman Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html"></span>Kembali ke Laman Utama</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="console.firebase.google.com"></span>Kemaskini Log Laporan</a>
+        </li>
+        <li class="nav-item" id='logoutBtn' style="display: none;">
+          <a class="nav-link" onclick="logoutUser()">Logout</a>
+        </li>
+      
+      </ul>
+    </div>
+  </nav>
+  <!-- Navbar : end -->
+<div id="not_logged_in">
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">MALAYSIAN SMART INFO DISASTER</h1>
+    <p class="lead">(mySID)</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 col-sm-12 col-md-12" >
+    <div class="form-card">
+    <p>This is a Sign In form</p>
+    <div id="sign_in_alerts"></div>
+    <form id='sign_in_form'>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="sign_in_email" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="sign_in_pwd" placeholder="Password">
+      </div>
+     
+      <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+  </div>
+  </div>
+  <!-- <div class="col-lg-6 col-sm-12 col-md-12">
+    <div class="form-card">
+    <p>This is a Sign up form</p>
+    <div id="sign_up_alerts">
+
+    </div>
+    <form id='sign_up_form'>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="sign_up_email" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="sign_up_pwd1" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Confirm Password</label>
+        <input type="password" class="form-control" id="sign_up_pwd2" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-success">Sign up</button>
+    </form>
+  </div>
+  </div> -->
+</div>
+</div>
+<div id="logged_in" >
+  <div class="map" id='map' ></div>
+  <div class="container text-center">
+    <div class="row align-items-start">
+      <section class="col-3 p-3 mb-2">
+        <h2>Carian lokasi:</h2>
+        <div class="d-flex flex-column">
+            <input class="form-control" list="datalistOptions" id="CityInput" placeholder="Masukkan nama lokasi...">
+            <br>
+            <button type="button" class="btn btn-primary btn-lg submit_city">Search</button><br><br>  
+        </div>
+        <div class="city_container d-flex flex-column">
+        </div>
+      </section>
+      <section class="col-sm-9 p-3">
+        <div class="row">
+            <div class="col-sm">
+                <h3 class="current_city_name text-start">Nama lokasi </h3>
+            </div>
+            <!-- <div class="col-sm image-container">
+                <img src="https://images.unsplash.com/photo-1452838269443-c86e6a3134f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fG1leGljbyUyMGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" class="city_pic rounded">
+            </div> -->
+        </div>
+        <div>
+            <h4>Ramalan 5 hari</h4>
+            <div class="card-group">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title date_3">Date</h5>
+                    <img src="https://openweathermap.org/img/wn/01d@2x.png" class="icon_3" alt="weather_description_3">
+                    <p class="weather_description_3">Weather description</p>
+                    <p class="Temperature_3">Temperature</p>
+                    <p class="Wind_3">Wind</p>
+                    <p class="Humidity_3">Humidity</p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title date_11">Date</h5>
+                    <img src="https://openweathermap.org/img/wn/01d@2x.png" class="icon_11" alt="weather_description_11">
+                    <p class="weather_description_11">Weather description</p>
+                    <p class="Temperature_11">Temperature</p>
+                    <p class="Wind_11">Wind</p>
+                    <p class="Humidity_11">Humidity</p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title date_19">Date</h5>
+                    <img src="https://openweathermap.org/img/wn/01d@2x.png" class="icon_19" alt="weather_description_19">
+                    <p class="weather_description_19">Weather description</p>
+                    <p class="Temperature_19">Temperature</p>
+                    <p class="Wind_19">Wind</p>
+                    <p class="Humidity_19">Humidity</p>
+                  </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title date_27">Date</h5>
+                        <img src="https://openweathermap.org/img/wn/01d@2x.png" class="icon_27" alt="weather_description_27">
+                        <p class="weather_description_27">Weather description</p>
+                        <p class="Temperature_27">Temperature</p>
+                        <p class="Wind_27">Wind</p>
+                        <p class="Humidity_27">Humidity</p>
+                      </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title date_35">Date</h5>
+                        <img src="https://openweathermap.org/img/wn/01d@2x.png" class="icon_35" alt="weather_description_35">
+                        <p class="weather_description_35">Weather description</p>
+                        <p class="Temperature_35">Temperature</p>
+                        <p class="Wind_35">Wind</p>
+                        <p class="Humidity_35">Humidity</p>
+                      </div>
+                  </div>
+              </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add entry modal -->
+<!-- Modal -->
+
+<script>
+  
+  </script>
+  <!-- Bootstrap js cdn -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- Firebase Init -->
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDZKXoNMtMQHvW53L3MgAdTbwOQXYdZPn0",
+    authDomain: "kik-jupem-johor-2023.firebaseapp.com",
+    projectId: "kik-jupem-johor-2023",
+    storageBucket: "kik-jupem-johor-2023.appspot.com",
+    messagingSenderId: "421829553050",
+    appId: "1:421829553050:web:c4b3677c14d32a08716823",
+    measurementId: "G-D86X7DGV9N"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<!-- auth js file -->
+<script src="admin-assets/js/auth.js"></script>
+<!-- map js file -->
+<script src="admin-assets/js/map.js"></script>
+<!-- App js file -->
+<script src="admin-assets/js/app.js"></script>
+<!-- feeding js file -->
+<script src="admin-assets/js/feed.js"></script>
+<!-- group icons -->
+<script src="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+
+<!-- WEATHER -->
+<script src="m6c-assets/script.js"></script>
+
+</body>
+</html>
