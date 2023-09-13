@@ -283,7 +283,7 @@ var banjir1mLayer = L.geoJson(null, {
     });
 
 //load wms form geoserver
-geoserver1m = L.tileLayer.wms(" https://humane-cobra-strictly.ngrok-free.app/geoserver/kik2023/wms", {
+geoserver1m = L.tileLayer.wms("https://humane-cobra-strictly.ngrok-free.app/geoserver/kik2023/wms?service=WMS&version=1.1.0&request=GetMap&layers=kik2023%3A_1m&bbox=101.84667905604165%2C1.3081681834057655%2C104.26246748616074%2C2.9338592909321735&width=768&height=516&srs=EPSG%3A4326&styles=&format=application/openlayers", {
     layers: 'kik2023:_1m',
     format: 'image/png',
     transparent: true,
