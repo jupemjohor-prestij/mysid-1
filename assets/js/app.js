@@ -1,4 +1,4 @@
-var map, featureList, boroughSearch = [], polisearch = [], hospitalearch = [];
+var map, featureList, boroughSearch = [], polisearch = [], hospitalearch = [], bombasearch = [];
 
 $(window).resize(function() {
   sizeLayerControl();
@@ -107,6 +107,14 @@ function syncSidebar() {
       }
     }
   });
+    /* Loop through bomba layer and add only features which are in the map bounds */
+    bomba.eachLayer(function (layer) {
+      if (map.hasLayer(bombaLayer)) {
+        if (map.getBounds().contains(layer.getLatLng())) {
+          $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/fire-station.png"></td><td class="feature-name">' + layer.feature.properties.name + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+        }
+      }
+    });
   /* Update list.js featureList */
   featureList = new List("features", {
     valueNames: ["feature-name"]
@@ -245,6 +253,49 @@ $.getJSON("data/OSM_hospital1.geojson", function (data) {
   hospital.addData(data);
 });
 
+/* Empty layer placeholder to add to layer control for listening when to add/remove polis to markerClusters layer */
+var bombaLayer = L.geoJson(null);
+var bomba = L.geoJson(null, {
+  pointToLayer: function (feature, latlng) {
+    return L.marker(latlng, {
+      icon: L.icon({
+        iconUrl: "assets/img/fire-station.png",
+        iconSize: [24, 28],
+        iconAnchor: [12, 28],
+        popupAnchor: [0, -25]
+      }),
+      title: feature.properties.NAME,
+      riseOnHover: true
+    });
+  },
+  onEachFeature: function (feature, layer) {
+    if (feature.properties) {
+      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.name + "</td></tr>"  + "<tr><th>Go to location</th><td><a class='url-break' href='" + feature.properties.GoogleMap + "' target='_blank'>" + feature.properties.GoogleMap + "</a></td></tr>" + "<table>";
+      layer.on({
+        click: function (e) {
+          $("#feature-title").html(feature.properties.name);
+          $("#feature-info").html(content);
+          $("#featureModal").modal("show");
+          highlight.clearLayers().addLayer(L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], highlightStyle));
+        }
+      });
+      $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/fire-station.png"></td><td class="feature-name">' + layer.feature.properties.name + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+      bombasearch.push({
+        name: layer.feature.properties.name,
+        address: layer.feature.properties.ADDRESS1,
+        source: "bomba",
+        id: L.stamp(layer),
+        lat: layer.feature.geometry.coordinates[1],
+        lng: layer.feature.geometry.coordinates[0]
+      });
+    }
+  }
+});
+$.getJSON("data/bomba.geojson", function (data) {
+  bomba.addData(data);
+  // map.addLayer(bombaLayer);
+});
+
 // LAYER BANJIR
 var banjir1mLayer = L.geoJson(null, {
       style: function (feature) {
@@ -344,6 +395,10 @@ map.on("overlayadd", function(e) {
     markerClusters.addLayer(hospital);
     syncSidebar();
   }
+  if (e.layer === bombaLayer) {
+    markerClusters.addLayer(bomba);
+    syncSidebar();
+  }
 });
 
 map.on("overlayremove", function(e) {
@@ -353,6 +408,10 @@ map.on("overlayremove", function(e) {
   }
   if (e.layer === hospitalLayer) {
     markerClusters.removeLayer(hospital);
+    syncSidebar();
+  }
+  if (e.layer === bombaLayer) {
+    markerClusters.removeLayer(bomba);
     syncSidebar();
   }
 });
@@ -440,6 +499,7 @@ var groupedOverlays = {
   "Perkhidmatan Kecemasan": {
     "<img src='assets/img/polis.png' width='24' height='28'>&nbsp;Balai Polis": polisLayer,
     "<img src='assets/img/hospital.png' width='24' height='28'>&nbsp;Hospital": hospitalLayer,
+    "<img src='assets/img/fire-station.png' width='24' height='28'>&nbsp;Bomba":bombaLayer,
     
   },
   "Semakan Risiko Baniir (JOHOR Sahaja)": {
