@@ -1,6 +1,6 @@
 // Define the OpenWeatherMap API key and default city
 var APIkey = '002b080f4f5ff3c71c662811a4753e10';
-var city = "Johor Bahru";
+var city = "Kuala Lumpur";
 var latitude;
 var longitude;
 // Function to retrieve the latitude and longitude of a city using the OpenWeatherMap Geocoding API

@@ -51,4 +51,4 @@ document
     }
   });
 
-weather.fetchWeather("Johor Bahru");
+weather.fetchWeather("Kuala Lumpur");
