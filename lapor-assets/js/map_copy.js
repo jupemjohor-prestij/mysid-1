@@ -4,8 +4,8 @@ function mapinit(){
    map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/light-v11',
-  center: [102.5,4],
-  zoom: 6,
+  center: [103.18,1.94],
+  zoom: 8.1,
   attributionControl: false,
   logoRequired:false,
   attribution: 'jupem.gov.my'
