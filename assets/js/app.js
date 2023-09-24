@@ -228,7 +228,7 @@ var hospital = L.geoJson(null, {
   onEachFeature: function (feature, layer) {
     if (feature.properties) {
       // var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.NAME + "</td></tr>" + "<tr><th>Phone</th><td>" + feature.properties.TEL + "</td></tr>" + "<tr><th>Address</th><td>" + feature.properties.ADRESS1 + "</td></tr>" + "<tr><th>Website</th><td><a class='url-break' href='" + feature.properties.URL + "' target='_blank'>" + feature.properties.URL + "</a></td></tr>" + "<table>";
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.NAME + "</td></tr>"+"<tr><th>Go to location</th><td><a class='url-break' href='" + feature.properties.GoogleMap + "' target='_blank'>" + feature.properties.GoogleMap + "</a></td></tr>" + "<table>";
+      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.NAME + "</td></tr>"+"<tr><th>Go to location</th><td><a class='url-break' href='" + feature.properties.Google_map + "' target='_blank'>" + feature.properties.Google_map + "</a></td></tr>" + "<table>";
       layer.on({
         click: function (e) {
           $("#feature-title").html(feature.properties.NAME);
@@ -249,7 +249,7 @@ var hospital = L.geoJson(null, {
     }
   }
 });
-$.getJSON("data/OSM_hospital1.geojson", function (data) {
+$.getJSON("data/Hospital.geojson", function (data) {
   hospital.addData(data);
 });
 
@@ -270,7 +270,7 @@ var bomba = L.geoJson(null, {
   },
   onEachFeature: function (feature, layer) {
     if (feature.properties) {
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.name + "</td></tr>"  + "<tr><th>Go to location</th><td><a class='url-break' href='" + feature.properties.GoogleMap + "' target='_blank'>" + feature.properties.GoogleMap + "</a></td></tr>" + "<table>";
+      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.Name + "</td></tr>"  + "<tr><th>Go to location</th><td><a class='url-break' href='" + feature.properties.Google_Map + "' target='_blank'>" + feature.properties.Google_Map + "</a></td></tr>" + "<table>";
       layer.on({
         click: function (e) {
           $("#feature-title").html(feature.properties.name);
@@ -291,7 +291,7 @@ var bomba = L.geoJson(null, {
     }
   }
 });
-$.getJSON("data/bomba.geojson", function (data) {
+$.getJSON("data/Bomba.geojson", function (data) {
   bomba.addData(data);
   // map.addLayer(bombaLayer);
 });
