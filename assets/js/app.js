@@ -332,51 +332,7 @@ var banjir1mLayer = L.geoJson(null, {
     $.getJSON("data/2m.geojson", function (data) {
       banjir2mLayer.addData(data);
     });
-
-//load wms form geoserver
-    geoserver1m = L.tileLayer.wms("https://humane-cobra-strictly.ngrok-free.app/geoserver/kik2023/wms", {
-//  geoserver1m = L.tileLayer.wms("localhost:8080/geoserver/kik2023/wms", {
-    layers: 'kik2023:1m_1',
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.0',
-    attribution: "country layer"
-});
-
-geoserver2m = L.tileLayer.wms("https://humane-cobra-strictly.ngrok-free.app/geoserver/kik2023/wms", {
-    layers: 'kik2023:2m_1',
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.0',
-    attribution: "country layer"
-});
-
-geoserver3m = L.tileLayer.wms("https://humane-cobra-strictly.ngrok-free.app/geoserver/kik2023/wms", {
-    layers: 'kik2023:3m_1',
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.0',
-    attribution: "country layer"
-});
-
-geoserver4m = L.tileLayer.wms("https://humane-cobra-strictly.ngrok-free.app/geoserver/kik2023/wms", {
-    layers: 'kik2023:4m_1',
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.0',
-    attribution: "country layer"
-});
-
-geoserver5m = L.tileLayer.wms("https://humane-cobra-strictly.ngrok-free.app/geoserver/kik2023/wms", {
-    layers: 'kik2023:5m_1',
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.0',
-    attribution: "country layer"
-});
-
-
-    
+   
 map = L.map("map", {
   zoom: 6,
   center: [4.05086231167319,108.18196517866467],
@@ -502,13 +458,6 @@ var groupedOverlays = {
     "<img src='assets/img/fire-station.png' width='24' height='28'>&nbsp;Bomba":bombaLayer,
     
   },
-  "Semakan Risiko Baniir (JOHOR Sahaja)": {
-    "Banjir Paras 1m":geoserver1m,
-    "Banjir Paras 2m":geoserver2m,
-    "Banjir Paras 3m":geoserver3m,
-    "Banjir Paras 4m":geoserver4m,
-    "Banjir Paras 5m":geoserver5m,
-  }
 };
 
 var layerControl = L.control.groupedLayers(baseLayers, groupedOverlays, {
